@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
 
     public Camera viewCam;
 
+    public GameObject bulletImpact;
 
     void Start()
     {
@@ -49,7 +50,8 @@ public class PlayerController : MonoBehaviour
       RaycastHit hit;
       if (Physics.Raycast(ray, out hit))
       {
-        Debug.Log("Hit: " + hit.collider.name);
+        //Debug.Log("Hit: " + hit.collider.name);
+        Instantiate(bulletImpact, hit.point, transform.rotation);
         // Here you can add logic to handle what happens when the player shoots an object
         // For example, you could apply damage to the object or destroy it
       }else
