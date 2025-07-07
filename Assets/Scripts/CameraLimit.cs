@@ -20,8 +20,8 @@ public class CameraLimit : MonoBehaviour
     void LateUpdate()
     {
         // Calcula los límites del fondo
-        float minX = background.bounds.min.x + halfWidth;
-        float maxX = background.bounds.max.x - halfWidth;
+        float minX = -26.42f ;
+        float maxX = 27.9f;
         float minY = background.bounds.min.y + halfHeight;
         float maxY = background.bounds.max.y - halfHeight;
 
