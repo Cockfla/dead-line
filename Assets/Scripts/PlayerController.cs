@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController instance;
+    
     public Rigidbody2D theRB;
     public float moveSpeed = 5.0f;
       private float moveInput;
@@ -22,8 +24,26 @@ public class PlayerController : MonoBehaviour
 
     public Animator gunAnim;
 
+    public int currentHealth ;
+    public int maxHealth = 100;
+    public GameObject deadScreen;
+    private bool hasDied;
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     void Start()
     {
+        currentHealth = maxHealth;
         // If viewCam is not assigned, try to find the main camera
         if (viewCam == null)
         {
@@ -37,6 +57,8 @@ public class PlayerController : MonoBehaviour
 
   void Update()
   {
+    if(!hasDied)
+    {
     //player movement
     moveInput = Input.GetAxis("Horizontal");
 
@@ -70,6 +92,7 @@ public class PlayerController : MonoBehaviour
       gunAnim.SetTrigger("Shoot");
     }
   }
+  }
 
   void LateUpdate()
   {
@@ -77,5 +100,34 @@ public class PlayerController : MonoBehaviour
     float clampedX = Mathf.Clamp(transform.position.x, minX, maxX);
     float clampedY = Mathf.Clamp(transform.position.y, minY, maxY);
     transform.position = new Vector3(clampedX, clampedY, transform.position.z);
+  }
+
+  public void TakeDamage(int damageAmount)
+  {
+    currentHealth -= damageAmount;
+    if(currentHealth <= 0)
+    {
+      deadScreen.SetActive(true);
+      hasDied = true;
+    }
+  }
+
+  public void AddHealth(int healthAmount)
+  {
+    currentHealth += healthAmount;
+    if(currentHealth > maxHealth)
+    {
+      currentHealth = maxHealth;
+    }
+  }
+  
+  // Método para mostrar información de debug
+  void OnGUI()
+  {
+    if (!hasDied)
+    {
+      GUI.Label(new Rect(10, 10, 200, 20), "Vida: " + currentHealth + "/" + maxHealth);
+      GUI.Label(new Rect(10, 30, 200, 20), "Posición: " + transform.position.ToString("F2"));
+    }
   }
 }
