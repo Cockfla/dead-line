@@ -69,6 +69,12 @@ public class EnemyBullet : MonoBehaviour
             return;
         }
         
+        // Actualizar posición objetivo del jugador en tiempo real
+        if (PlayerController.instance != null)
+        {
+            targetPosition = PlayerController.instance.transform.position;
+        }
+        
         // Simular movimiento en Z (profundidad)
         currentZ -= zSpeed * Time.deltaTime;
         
@@ -77,7 +83,7 @@ public class EnemyBullet : MonoBehaviour
         float currentScale = Mathf.Lerp(minScale, maxScale, zProgress);
         transform.localScale = initialScale * currentScale;
         
-        // Mover la bala hacia la posición objetivo en 2D
+        // Mover la bala hacia la posición objetivo en 2D (actualizada en tiempo real)
         Vector3 currentPos = transform.position;
         Vector3 direction = (targetPosition - currentPos).normalized;
         float moveSpeed = zSpeed * (1f + zProgress); // Más rápido cuando está cerca

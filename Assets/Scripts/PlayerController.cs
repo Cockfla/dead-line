@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -23,11 +25,14 @@ public class PlayerController : MonoBehaviour
     public float maxX = 35.03f; // Límite superior
 
     public Animator gunAnim;
+    public Animator anim;
 
     public int currentHealth ;
     public int maxHealth = 100;
     public GameObject deadScreen;
     private bool hasDied;
+
+    public TextMeshProUGUI healthText;
 
     void Awake()
     {
@@ -44,6 +49,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
+        healthText.text = currentHealth.ToString() + "%";
         // If viewCam is not assigned, try to find the main camera
         if (viewCam == null)
         {
@@ -83,13 +89,24 @@ public class PlayerController : MonoBehaviour
 
         if(hit.transform.tag == "Enemy")
         {
+            AudioController.instance.PlayEnemySound();
             hit.transform.parent.GetComponent<EnemyController>().TakeDamage();
         }
+        
       }else
       {
         Debug.Log("Missed");
       }
+      AudioController.instance.PlayGunSound();
       gunAnim.SetTrigger("Shoot");
+    }
+    if(moveInput != 0f)
+    {
+      anim.SetBool("isMoving", true);
+    }
+    else
+    {
+      anim.SetBool("isMoving", false);
     }
   }
   }
@@ -104,12 +121,16 @@ public class PlayerController : MonoBehaviour
 
   public void TakeDamage(int damageAmount)
   {
+    AudioController.instance.PlayPlayerHurtSound();
     currentHealth -= damageAmount;
     if(currentHealth <= 0)
     {
       deadScreen.SetActive(true);
       hasDied = true;
+      currentHealth = 0;
     }
+
+    healthText.text = currentHealth.ToString() + "%";
   }
 
   public void AddHealth(int healthAmount)

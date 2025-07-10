@@ -23,6 +23,12 @@ public class EnemyController : MonoBehaviour
     private int currentHealth;
     private float lastShootTime;
 
+    public bool shouldShoot;
+    public float fireRate = 5f;
+    private float shotCounter;
+    public GameObject bullet;
+    public Transform firePoint;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -45,11 +51,24 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Sistema de disparo automático
-        if (Time.time - lastShootTime >= shootInterval)
+        // Sistema de disparo unificado
+        if (shouldShoot)
         {
-            ShootAtPlayer();
-            lastShootTime = Time.time;
+            shotCounter -= Time.deltaTime;
+            if (shotCounter <= 0)
+            {
+                ShootAtPlayer();
+                shotCounter = fireRate;
+            }
+        }
+        else
+        {
+            // Sistema de disparo automático como respaldo
+            if (Time.time - lastShootTime >= shootInterval)
+            {
+                ShootAtPlayer();
+                lastShootTime = Time.time;
+            }
         }
     }
     
@@ -57,6 +76,9 @@ public class EnemyController : MonoBehaviour
     {
         if (enemyBulletPrefab != null && PlayerController.instance != null)
         {
+            // Calcular dirección hacia el jugador
+            Vector3 directionToPlayer = (PlayerController.instance.transform.position - transform.position).normalized;
+            
             // Calcular posición inicial del disparo (en el fondo)
             Vector3 bulletStartPos = transform.position;
             bulletStartPos.z = startZ; // Posición Z inicial (lejos)
@@ -73,6 +95,8 @@ public class EnemyController : MonoBehaviour
                 bulletScript.endZ = endZ;
                 bulletScript.zSpeed = zSpeed;
             }
+            
+            Debug.Log("Enemigo disparó hacia el jugador. Posición jugador: " + PlayerController.instance.transform.position);
         }
     }
 
@@ -85,6 +109,17 @@ public class EnemyController : MonoBehaviour
             // Crea el sprite muerto un poco más abajo que la posición original
             Vector3 deadPosition = transform.position + Vector3.down * 2.5f; // Ajusta el valor 0.5f según necesites
             Instantiate(dead, deadPosition, transform.rotation); 
+        }
+    }
+    
+    // Visualizar el firePoint en el editor
+    void OnDrawGizmosSelected()
+    {
+        if (firePoint != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(firePoint.position, 0.2f);
+            Gizmos.DrawLine(firePoint.position, firePoint.position + firePoint.up * 1f);
         }
     }
 }
