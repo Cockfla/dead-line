@@ -8,7 +8,7 @@ public class EnemyBullet : MonoBehaviour
     public int damageAmount = 10;
 
     [Header("Sistema de Profundidad 3D Simulado")]
-    public float startZ = 10f; // Posición Z inicial (lejos)
+    public float startZ = 1f; // Posición Z inicial (lejos)
     public float endZ = 1f; // Posición Z final (cerca)
     public float zSpeed = 2f; // Velocidad de acercamiento en Z
     public float currentZ; // Posición Z actual

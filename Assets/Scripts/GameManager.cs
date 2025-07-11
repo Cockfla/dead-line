@@ -13,13 +13,17 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        // Solo manejar el cursor si el juego no está pausado
+        if (Time.timeScale > 0)
         {
-            UnlockCursor();
-        }
-        else if (Input.GetMouseButtonDown(0))
-        {
-            LockCursor();
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                UnlockCursor();
+            }
+            else if (Input.GetMouseButtonDown(0))
+            {
+                LockCursor();
+            }
         }
     }
 

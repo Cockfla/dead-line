@@ -63,8 +63,15 @@ public class PlayerController : MonoBehaviour
 
   void Update()
   {
-    if(!hasDied)
+    // No procesar input si el juego está pausado o el jugador está muerto
+    if(Time.timeScale == 0f || hasDied)
     {
+      // Si está muerto o pausado, detener todo movimiento y input
+      theRB.velocity = Vector2.zero;
+      anim.SetBool("isMoving", false);
+      return;
+    }
+    
     //player movement
     moveInput = Input.GetAxis("Horizontal");
 
@@ -89,7 +96,7 @@ public class PlayerController : MonoBehaviour
 
         if(hit.transform.tag == "Enemy")
         {
-            AudioController.instance.PlayEnemySound();
+            // El sonido de daño ahora se reproduce dentro del TakeDamage() del enemigo
             hit.transform.parent.GetComponent<EnemyController>().TakeDamage();
         }
         
@@ -109,7 +116,6 @@ public class PlayerController : MonoBehaviour
       anim.SetBool("isMoving", false);
     }
   }
-  }
 
   void LateUpdate()
   {
@@ -128,6 +134,11 @@ public class PlayerController : MonoBehaviour
       deadScreen.SetActive(true);
       hasDied = true;
       currentHealth = 0;
+      
+      // Pausar el juego y mostrar el mouse
+      Time.timeScale = 0f;
+      Cursor.lockState = CursorLockMode.None;
+      Cursor.visible = true;
     }
 
     healthText.text = currentHealth.ToString() + "%";

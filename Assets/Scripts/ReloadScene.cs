@@ -19,6 +19,10 @@ public class ReloadScene : MonoBehaviour
 
     public void ResetScene()
     {
+        // Restaurar tiempo normal y ocultar mouse
+        Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

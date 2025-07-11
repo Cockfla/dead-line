@@ -7,6 +7,13 @@ public class EnemyController : MonoBehaviour
     public enum EnemyType { Normal, Fuerte, Jefe }
     public EnemyType tipo = EnemyType.Normal;
 
+    [Header("Sprites")]
+    public SpriteRenderer spriteRenderer;
+    public Sprite normalSprite;
+    public Sprite fuerteSprite;
+    public Sprite jefeSprite;
+
+    [Header("Efectos")]
     public GameObject dead;
     public GameObject enemyBulletPrefab; // Prefab de la bala enemiga (asignar el objeto "Disparo")
 
@@ -32,17 +39,26 @@ public class EnemyController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Asigna la vida según el tipo de enemigo
+        // Configurar sprite según el tipo
+        if (spriteRenderer == null)
+            spriteRenderer = GetComponent<SpriteRenderer>();
+            
         switch (tipo)
         {
             case EnemyType.Normal:
                 maxHealth = 3;
+                if (normalSprite != null)
+                    spriteRenderer.sprite = normalSprite;
                 break;
             case EnemyType.Fuerte:
                 maxHealth = 10;
+                if (fuerteSprite != null)
+                    spriteRenderer.sprite = fuerteSprite;
                 break;
             case EnemyType.Jefe:
-                maxHealth = 50;
+                maxHealth = 30;
+                if (jefeSprite != null)
+                    spriteRenderer.sprite = jefeSprite;
                 break;
         }
         currentHealth = maxHealth;
@@ -103,8 +119,21 @@ public class EnemyController : MonoBehaviour
     public void TakeDamage()
     {
         currentHealth--;
+        
+        // Reproducir sonido de daño según el tipo de enemigo
+        if (AudioController.instance != null)
+        {
+            AudioController.instance.PlayEnemyHitSound(tipo);
+        }
+        
         if(currentHealth <= 0)
         {
+            // Reproducir sonido de muerte según el tipo de enemigo
+            if (AudioController.instance != null)
+            {
+                AudioController.instance.PlayEnemyDeathSound(tipo);
+            }
+            
             Destroy(gameObject);
             // Crea el sprite muerto un poco más abajo que la posición original
             Vector3 deadPosition = transform.position + Vector3.down * 2.5f; // Ajusta el valor 0.5f según necesites
