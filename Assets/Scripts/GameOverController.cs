@@ -7,7 +7,9 @@ public class GameOverController : MonoBehaviour
     public UnityEngine.UI.Button restartButton;
     public UnityEngine.UI.Button mainMenuButton;
     public UnityEngine.UI.Button quitButton;
-    
+    public UnityEngine.UI.Button creditsButton;
+
+
     void Start()
     {
         // Configurar botones
@@ -19,8 +21,12 @@ public class GameOverController : MonoBehaviour
             
         if (quitButton != null)
             quitButton.onClick.AddListener(QuitGame);
+
+        if (creditsButton != null)
+            creditsButton.onClick.AddListener(GoToCredits);
+
     }
-    
+
     void RestartGame()
     {
         // Restaurar tiempo normal y ocultar mouse
@@ -48,4 +54,13 @@ public class GameOverController : MonoBehaviour
             Application.Quit();
         #endif
     }
-} 
+
+    void GoToCredits()
+    {
+        Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        SceneManager.LoadScene("CreditsScene"); // Asegúrate de que el nombre coincida exactamente
+    }
+
+}
