@@ -743,7 +743,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1064b15c01d05d41a03251143a7f3a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameSceneName: GAME
+  gameSceneName: Intro
   creditsSceneName: CreditsScene
   optionsPanel: {fileID: 644327916}
   buttonGroup: {fileID: 1190690860}
