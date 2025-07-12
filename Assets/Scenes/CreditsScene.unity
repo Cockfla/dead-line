@@ -509,8 +509,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "DEADLINE\r\nDESARROLLADO POR:\n\nEL\xCDAS BAHAMONDES CONTRERAS\n\nMARIO
-    LIRA ALEGR\xCDA\n\nERIC PEDREROS ULLOA\n\n\n\n\xA1Gracias por jugar Deadline!"
+  m_text: "DEADLINE\r\nDESARROLLADO POR:\n\nEL\xCDAS BAHAMONDES CONTRERAS\nProgramaci\xF3n
+    (movimiento, disparo, colisiones, HUD)\r\n\n\nMARIO LIRA ALEGR\xCDA\nDise\xF1o
+    art\xEDstico (Sprite, entorno, animaciones)\r\n\n\nERIC PEDREROS ULLOA\nProgramaci\xF3n,Sonido,
+    dise\xF1o de interfaz, documentaci\xF3n y apoyo t\xE9cnico\n\n\n\n\xA1Gracias
+    por jugar Deadline!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
